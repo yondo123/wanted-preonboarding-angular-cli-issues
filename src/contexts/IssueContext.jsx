@@ -3,11 +3,12 @@ import { createContext, useState } from 'react';
 import issue from '../api/issue';
 
 const issueContext = createContext({
-  state: { page: 1, range: 10, issueNumber: '', issueList: [] },
+  state: { page: 1, range: 40, issueNumber: '', issueList: [] },
   actions: {
     setPage: () => {},
     setRange: () => {},
     setIssueList: () => {},
+    setIssue: () => {},
   },
   fetch: {
     getIssues: issue.getIssues,
@@ -17,7 +18,7 @@ const issueContext = createContext({
 
 function IssueContext({ children }) {
   const [page, setPage] = useState(1);
-  const [range, setRange] = useState(10);
+  const [range, setRange] = useState(40);
   const [issueList, setIssueList] = useState([]);
 
   const value = {
