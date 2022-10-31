@@ -12,7 +12,7 @@ function IssueDetail() {
   const fetchIssueDetail = async () => {
     await fetch
       .getIssueDetail(issueNumber)
-      .then(res => {
+      .then((res) => {
         setIssue(res.data);
       })
       .then(() => setIsLoading(false));
