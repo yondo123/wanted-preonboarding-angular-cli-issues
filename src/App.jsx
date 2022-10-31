@@ -3,10 +3,12 @@ import IssueContext from './contexts/IssueContext';
 import Layout from './components/Layout';
 import IssueDetail from './pages/IssueDetail';
 import Issues from './pages/Issues';
+import GlobalStyle from './styles/GlobalStyle';
 
 function App() {
   return (
-    <div>
+    <>
+      <GlobalStyle />
       <IssueContext>
         <BrowserRouter>
           <Routes>
@@ -17,7 +19,7 @@ function App() {
           </Routes>
         </BrowserRouter>
       </IssueContext>
-    </div>
+    </>
   );
 }
 
