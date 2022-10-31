@@ -1,35 +1,35 @@
+import styled from 'styled-components';
 import { useContext, useEffect, useState } from 'react';
 import { issueContext } from '../contexts/IssueContext';
 import IssueItem from '../components/IssueItem';
+import useIntersect from '../hooks/useIntersect';
+import Spinner from '../components/Spinner';
 
 function Issues() {
   const { fetch, actions, state } = useContext(issueContext);
   const [isLoading, setIsLoading] = useState(false);
-  const [target, setTarget] = useState(null);
 
-  const fetchIssues = async (observer) => {
-    if (!isLoading && observer[0].isIntersecting) {
-      setIsLoading(true);
-      await fetch
-        .getIssues(state.range, state.page)
-        .then((res) => {
-          actions.setIssueList((prev) => [...prev, ...res.data]);
-        })
-        .then(() => {
-          setIsLoading(false);
-          actions.setPage(state.page++);
-        });
-    }
+  const fetchIssues = async () => {
+    setIsLoading(true);
+    await fetch.getIssues(state.range, state.page).then((res) => {
+      actions.setIssueList((prev) => [...prev, ...res.data]);
+    });
+    actions.setPage(state.page++);
+    setIsLoading(false);
   };
 
   useEffect(() => {
-    let observer;
-    if (target) {
-      observer = new IntersectionObserver(fetchIssues, { threshold: 0.5 });
-      observer.observe(target);
-    }
-    return () => observer && observer.disconnect();
-  }, [target]);
+    fetchIssues();
+  }, []);
+
+  const [, setRef] = useIntersect(
+    async (entry, observer) => {
+      observer.unobserve(entry.target);
+      await fetchIssues();
+      observer.observe(entry.target);
+    },
+    { threshold: 0.5 }
+  );
 
   return (
     <div>
@@ -38,11 +38,19 @@ function Issues() {
           <IssueItem key={item.id} item={item} />
         ))}
       </ul>
-      <div className="loading" ref={setTarget}>
-        <span>{!isLoading && 'Loading..'}</span>
+      <div className="loading" ref={setRef}>
+        {isLoading && (
+          <Loading>
+            <Spinner />
+          </Loading>
+        )}
       </div>
     </div>
   );
 }
+
+const Loading = styled.div`
+  backgrond: #fff;
+`;
 
 export default Issues;
