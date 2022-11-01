@@ -1,6 +1,7 @@
+import Markdown from 'react-markdown';
+import styled from 'styled-components';
 import { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import Markdown from 'react-markdown';
 import { issueContext } from '../contexts/IssueContext';
 
 function IssueDetail() {
@@ -31,7 +32,7 @@ function IssueDetail() {
   }
 
   return (
-    <div>
+    <IssueItem>
       <header className="title">
         <div className="image">
           <img src={issue.user.avatar_url || ''} alt="" />
@@ -51,8 +52,13 @@ function IssueDetail() {
       <main>
         <Markdown>{issue.body}</Markdown>
       </main>
-    </div>
+    </IssueItem>
   );
 }
+
+const IssueItem = styled.li`
+  background-color: #402e5d;
+  color: #402e5d;
+`;
 
 export default IssueDetail;

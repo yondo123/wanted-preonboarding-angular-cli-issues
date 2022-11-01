@@ -33,24 +33,22 @@ function Issues() {
 
   return (
     <div>
-      <ul>
+      <IssueList>
         {state.issueList.map((item) => (
           <IssueItem key={item.id} item={item} />
         ))}
-      </ul>
+      </IssueList>
       <div className="loading" ref={setRef}>
-        {isLoading && (
-          <Loading>
-            <Spinner />
-          </Loading>
-        )}
+        {isLoading && <Spinner />}
       </div>
     </div>
   );
 }
 
-const Loading = styled.div`
-  backgrond: #fff;
+const IssueList = styled.ul`
+  font-size: 16px;
+  display: flex;
+  flex-direction: column;
 `;
 
 export default Issues;
