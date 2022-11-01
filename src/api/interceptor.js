@@ -10,11 +10,11 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use(
-  config => {
+  (config) => {
     config.method = 'GET';
     return config;
   },
-  err => Promise.reject(err)
+  (err) => Promise.reject(err)
 );
 
 export default axiosInstance;
