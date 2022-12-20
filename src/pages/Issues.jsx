@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { issueContext } from '../contexts/IssueContext';
 import IssueItem from '../components/IssueItem';
 import useIntersect from '../hooks/useIntersect';
@@ -8,19 +8,23 @@ import Spinner from '../components/Spinner';
 function Issues() {
   const { fetch, actions, state } = useContext(issueContext);
   const [isLoading, setIsLoading] = useState(false);
+  let isLimit = false;
 
   const fetchIssues = async () => {
-    setIsLoading(true);
+    if (isLimit) {
+      setIsLoading(false);
+      return;
+    }
     await fetch.getIssues(state.range, state.page).then((res) => {
-      actions.setIssueList((prev) => [...prev, ...res.data]);
+      if (res.data.length) {
+        actions.setIssueList((prev) => [...prev, ...res.data]);
+        actions.setPage(state.page++);
+        setIsLoading(true);
+        return;
+      }
+      isLimit = true;
     });
-    actions.setPage(state.page++);
-    setIsLoading(false);
   };
-
-  useEffect(() => {
-    fetchIssues();
-  }, []);
 
   const [, setRef] = useIntersect(
     async (entry, observer) => {
@@ -39,7 +43,7 @@ function Issues() {
         ))}
       </IssueList>
       <div className="loading" ref={setRef}>
-        {isLoading && <Spinner />}
+        {isLoading && !isLimit && <Spinner />}
       </div>
     </div>
   );
