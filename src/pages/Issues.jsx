@@ -4,6 +4,8 @@ import { issueContext } from '../contexts/IssueContext';
 import IssueItem from '../components/IssueItem';
 import useIntersect from '../hooks/useIntersect';
 import Spinner from '../components/Spinner';
+import AdBanner from '../components/AdBanner';
+import constants from '../utils/constants';
 
 function Issues() {
   const { fetch, actions, state } = useContext(issueContext);
@@ -38,9 +40,9 @@ function Issues() {
   return (
     <div>
       <IssueList>
-        {state.issueList.map((item) => (
-          <IssueItem key={item.id} item={item} />
-        ))}
+        {state.issueList.map((item, index) =>
+          index === constants.AD_SEQUENCE ? <AdBanner /> : <IssueItem key={item.id} item={item} />
+        )}
       </IssueList>
       <div className="loading" ref={setRef}>
         {isLoading && !isLimit && <Spinner />}
