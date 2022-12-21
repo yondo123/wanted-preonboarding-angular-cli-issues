@@ -27,7 +27,6 @@ function IssueItem({ item }) {
 
 const Issue = styled.li`
   color: ${({ theme }) => theme.font};
-  margin-bottom: 12px;
   border-bottom: solid 1px ${({ theme }) => theme.border};
   ${responsive('md')} {
     padding: 0 48px;
@@ -35,7 +34,7 @@ const Issue = styled.li`
 `;
 
 const Post = styled.div`
-  padding: 8px 0;
+  padding: 12px 0;
 `;
 
 const PostTitle = styled.div`

@@ -15,7 +15,7 @@ const Banner = styled.li`
   list-style: none;
   margin-bottom: 12px;
   border-bottom: solid 1px ${({ theme }) => theme.border};
-  padding: 8px 0;
+  padding: 12px 0;
 
   img {
     margin: auto;
